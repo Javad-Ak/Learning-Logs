@@ -6,12 +6,8 @@
     <ul>
         {% for topic in topics %}
             <li>
-                <form action="{% url 'logs:topic' topic.id %}" method='post'>
-                    {% csrf_token %}
-                    <a href="{% url 'logs:topic' topic.id %}">{{ topic.text }}</a>
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button name="submit">Delete topic</button>
-                </form>
+                <a href="{% url 'logs:topic' topic.id %}">{{ topic.text }}</a>
+                <p>Added by {{ topic.owner.username }} on {{ topic.date_added|date:'M d, Y H:i' }}</p>
             </li>
         {% empty %}
             <li>No topics have been added yet.</li>

@@ -27,6 +27,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # Custom settings
+LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'logs:index'
 LOGOUT_REDIRECT_URL = 'logs:index'
 
