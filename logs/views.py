@@ -18,9 +18,14 @@ def topics(request):
 def topic(request, topic_id):
     """Show topic's details."""
     obj = Topic.objects.get(id=topic_id)
-    objects = obj.entry_set.order_by('date_added')
-    context = {'topic': obj, 'entries': objects}
-    return render(request, 'logs/topic.html', context)
+
+    if request.method == "POST" and request.POST.get("_method") == "DELETE":
+        obj.delete()
+        return render(request, 'logs/topics.html', {"topics": Topic.objects.all()})
+    else:
+        objects = obj.entry_set.order_by('date_added')
+        context = {'topic': obj, 'entries': objects}
+        return render(request, 'logs/topic.html', context)
 
 
 def new_topic(request):
