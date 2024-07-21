@@ -12,7 +12,7 @@ def index(request):
 
 def topics(request):
     """Show all topics."""
-    objects = Topic.objects.order_by('date_added')
+    objects = reversed(Topic.objects.order_by('date_added'))
     context = {'topics': objects}
     return render(request, 'logs/topics.html', context)
 
@@ -28,7 +28,7 @@ def topic(request, topic_id):
         obj.delete()
         return render(request, 'logs/topics.html', {"topics": Topic.objects.all()})
     else:
-        objects = obj.entry_set.order_by('date_added')
+        objects = reversed(obj.entry_set.order_by('date_added'))
         context = {'topic': obj, 'entries': objects}
         return render(request, 'logs/topic.html', context)
 
@@ -57,6 +57,9 @@ def new_topic(request):
 def new_entry(request, topic_id):
     """Add a new entry for a particular topic."""
     topic = Topic.objects.get(id=topic_id)
+
+    if request.user != topic.owner:
+        raise http.Http404("You are not allowed.")
 
     if request.method != 'POST':
         # No data submitted; create a blank form.

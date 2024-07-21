@@ -3,15 +3,15 @@
 {% block content %}
 
     <p>Topic: {{ topic.text }}</p>
-     <p>Added by {{ topic.owner.username }} on {{ topic.date_added|date:'M d, Y H:i' }}</p>
-    {% if user.is_authenticated %}
+    <p>Added by {{ topic.owner.username }} on {{ topic.date_added|date:'M d, Y H:i' }}</p>
+    {% if user == topic.owner %}
         <div style="display: flex; gap: 0.5em">
             <form action="{% url 'logs:topic' topic.id %}" method='post'>
                 {% csrf_token %}
                 <input type="hidden" name="_method" value="DELETE">
                 <button name="submit">Delete topic</button>
             </form>
-            <form action="{% url 'logs:new_entry' topic.id  %}" method='get'>
+            <form action="{% url 'logs:new_entry' topic.id %}" method='get'>
                 {% csrf_token %}
                 <button name="submit">Add entry</button>
             </form>
@@ -24,7 +24,9 @@
             <li>
                 <p>{{ entry.date_added|date:'M d, Y H:i' }}</p>
                 <p>{{ entry.text|linebreaks }}</p>
-                <p><a href="{% url 'logs:edit_entry' entry.id %}">Edit entry</a></p>
+                {% if user == topic.owner %}
+                    <p><a href="{% url 'logs:edit_entry' entry.id %}">Edit entry</a></p>
+                {% endif %}
             </li>
         {% empty %}
             <li>There are no entries for this topic yet.</li>
