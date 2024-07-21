@@ -26,11 +26,16 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# Custom settings
+LOGIN_REDIRECT_URL = 'logs:index'
+LOGOUT_REDIRECT_URL = 'logs:index'
+
 # Application definition
 
 INSTALLED_APPS = [
     # custom apps
     'logs',
+    'accounts',
 
     # Default apps
     'django.contrib.admin',

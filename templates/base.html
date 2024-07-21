@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" type="text/css" href="styles/style.css"/>
+    <title>Learning Logs</title>
+</head>
+
+<body>
+<header>
+    <section id="header" style="display: flex; padding: 1em;">
+        <div style="flex: auto; float: left;">
+            <a href="{% url 'logs:index' %}">Learning Log</a> -
+            <a href="{% url 'logs:topics' %}">Topics</a>
+        </div>
+
+        <div style="flex: none; float: right">
+            {% if user.is_authenticated %}
+                <form action="{% url 'accounts:logout' %}" method='post'>
+                    {% csrf_token %}
+                    <label>Signed in as {{ user.username }}.</label>
+                    <button name='submit'>Log out</button>
+                </form>
+            {% else %}
+                <a href="{% url 'accounts:register' %}">Register</a> -
+                <a href="{% url 'accounts:login' %}">Log in</a>
+            {% endif %}
+        </div>
+    </section>
+</header>
+<section style="padding: 1em">
+    {% block content %}{% endblock content %}
+</section>
+</body>
+</html> 
