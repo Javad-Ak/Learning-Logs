@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" data-bs-theme="light">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,10 +8,13 @@
     {% load django_bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
+
+    <link rel="stylesheet" href=
+            "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body>
-<nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
+<nav class="navbar navbar-expand-md mb-4 border">
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'logs:index' %}">Learning Log</a>
 
@@ -26,7 +29,13 @@
             <ul class="navbar-nav me-auto gap-2">
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logs:topics' %}">
-                        Topics</a></li>
+                        Topics</a>
+                </li>
+                <li>
+                    <button class="btn" id="theme">
+                        <i class="bi bi-circle-half"></i>
+                    </button>
+                </li>
             </ul>
 
             <!-- Right side of navbar -->
@@ -68,6 +77,22 @@
         {% block content %}{% endblock content %}
     </div>
 </main>
+
+<script>
+    // On page load, check localStorage for theme preference
+    document.addEventListener('DOMContentLoaded', function () {
+        const storedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-bs-theme', storedTheme)
+    });
+
+    // Toggle theme on button click and save preference to localStorage
+    document.getElementById('theme').addEventListener('click', function () {
+        const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-bs-theme', newTheme)
+        localStorage.setItem('theme', newTheme);
+    });
+</script>
 
 </body>
 </html> 
