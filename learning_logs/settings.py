@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-2ycqdv&%$u_&!zilbh52wv2is=d^24r)4uudjunlj@zf)i4lrg
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 # Custom settings
 LOGIN_URL = 'accounts:login'
@@ -65,7 +65,7 @@ ROOT_URLCONF = 'learning_logs.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'logs/../templates']
+        'DIRS': [BASE_DIR / 'templates', BASE_DIR / 'templates/errors']
         ,
         'APP_DIRS': True,
         'OPTIONS': {

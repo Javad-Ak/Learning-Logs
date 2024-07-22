@@ -27,7 +27,7 @@ def topic(request, topic_id):
     obj = Topic.objects.get(id=topic_id)
 
     if request.method == "POST" and request.POST.get("_method") == "DELETE":
-        if request.user != obj.owner:
+        if request.user != obj.owner or not obj:
             raise http.Http404("You are not allowed.")
 
         obj.delete()
@@ -89,7 +89,7 @@ def edit_entry(request, entry_id):
     entry = Entry.objects.get(id=entry_id)
     topic = entry.topic
 
-    if request.user != topic.owner:
+    if request.user != topic.owner or not entry:
         raise http.Http404("You are not allowed.")
 
     if request.method != 'POST':
