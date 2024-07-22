@@ -1,21 +1,25 @@
 {% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block header %}
+    <h2>Explore latest topics.</h2>
+{% endblock header %}
 
 {% block content %}
-
-    <p>Topics</p>
-    <ul>
+    <ul class="list-group">
         {% for topic in topics %}
-            <li>
+            <li class="list-group-item">
                 <a href="{% url 'logs:topic' topic.id %}">{{ topic.text }}</a>
                 <p>Added by {{ topic.owner.username }} on {{ topic.date_added|date:'M d, Y H:i' }}</p>
             </li>
         {% empty %}
-            <li>No topics have been added yet.</li>
+            <li class="list-group-item">No topics have been added yet.</li>
         {% endfor %}
     </ul>
 
     {% if user.is_authenticated %}
-        <a href="{% url 'logs:new_topic' %}">Add a new topic</a>
+        <form action="{% url 'logs:new_topic' %}">
+            <button class="btn btn-outline-primary my-2" name="submit">Add a new topic</button>
+        </form>
     {% endif %}
-
 {% endblock content %}

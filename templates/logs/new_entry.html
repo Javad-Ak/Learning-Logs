@@ -1,14 +1,16 @@
 {% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block header %}
+    <h4>Add a new entry to 
+        <a href="{% url 'logs:topic' topic.id %}">{{ topic.text }}</a>:
+    </h4>
+{% endblock header %}
 
 {% block content %}
-
-    <p><a href="{% url 'logs:topic' topic.id %}">{{ topic }}</a></p>
-
-    <p>Add a new entry:</p>
     <form action="{% url 'logs:new_entry' topic.id %}" method='post'>
         {% csrf_token %}
-        {{ form.as_div }}
-        <button name='submit'>Add entry</button>
+        {% bootstrap_form form %}
+        {% bootstrap_button button_type="submit" content="Add entry" %}
     </form>
-
 {% endblock content %}

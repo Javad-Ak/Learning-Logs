@@ -1,5 +1,7 @@
 from django import http
 from django.shortcuts import render, redirect
+from django.urls.exceptions import NoReverseMatch
+
 from .forms import *
 from .models import Topic
 from django.contrib.auth.decorators import login_required
@@ -12,7 +14,10 @@ def index(request):
 
 def topics(request):
     """Show all topics."""
-    objects = reversed(Topic.objects.order_by('date_added'))
+    objects = Topic.objects.order_by('date_added').reverse()
+    if objects:
+        objects.reverse()
+
     context = {'topics': objects}
     return render(request, 'logs/topics.html', context)
 
@@ -28,7 +33,7 @@ def topic(request, topic_id):
         obj.delete()
         return render(request, 'logs/topics.html', {"topics": Topic.objects.all()})
     else:
-        objects = reversed(obj.entry_set.order_by('date_added'))
+        objects = obj.entry_set.order_by('date_added').reverse()
         context = {'topic': obj, 'entries': objects}
         return render(request, 'logs/topic.html', context)
 

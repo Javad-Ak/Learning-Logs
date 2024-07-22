@@ -23,16 +23,16 @@
 
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <!-- Left side of navbar -->
-            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <ul class="navbar-nav me-auto gap-2">
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logs:topics' %}">
                         Topics</a></li>
             </ul>
 
             <!-- Right side of navbar -->
-            <ul class="navbar-nav ms-auto mb-2 mb-md-0">
+            <ul class="navbar-nav ms-auto mb-2 mb-md-0 gap-2">
                 {% if user.is_authenticated %}
-                    <li class="nav-item me-2">
+                    <li class="nav-item">
                         <label class="navbar-text">Hello, {{ user.username }}.</label>
                     </li>
                     <li class="nav-item">
@@ -42,7 +42,7 @@
                         </form>
                     </li>
                 {% else %}
-                    <li class="nav-item me-2">
+                    <li class="nav-item">
                         <form action="{% url 'accounts:register' %}" method='get'>
                             {% bootstrap_button button_type="submit" content="Register" %}
                         </form>
