@@ -1,19 +1,20 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from django.contrib.auth.forms import UserCreationForm
 
-from accounts.forms import ProfileForm
+from .forms import ProfileForm, UserForm
+from .models import Profile
 
 
 def register(request):
     """Register a new user."""
     if request.method != 'POST':
         # Display blank registration form.
-        form = UserCreationForm()
+        form = UserForm()
     else:
         # Process completed form.
-        form = UserCreationForm(data=request.POST)
+        form = UserForm(data=request.POST)
 
         if form.is_valid():
             new_user = form.save()
@@ -27,20 +28,38 @@ def register(request):
 
 
 @login_required
-def new_profile(request):
-    """Create a new profile."""
+def edit_profile(request):
+    """edit a user's profile."""
+    try:
+        obj = Profile.objects.get(user=request.user)
+    except Profile.DoesNotExist:
+        obj = Profile(user=request.user)
+        obj.save()
+
     if request.method != 'POST':
         # No data submitted; create a blank form.
-        form = ProfileForm(request.POST, request.FILES)
+        form = ProfileForm(instance=obj)
     else:
         # POST data submitted; process data.
         form = ProfileForm(data=request.POST, files=request.FILES)
+        print(request.FILES)
         if form.is_valid():
             new_profile = form.save(commit=False)
             new_profile.user = request.user
             new_profile.save()
-            return redirect('logs:index')
+            return redirect('accounts:profile', id=request.user.id)
 
     # Display a blank or invalid form.
-    context = {'form': form}
-    return render(request, 'registration/new_profile.html', context)
+    return render(request, 'registration/edit_profile.html', {'form': form})
+
+
+def profile(request, id):
+    """Show user's profile."""
+    user = User.objects.get(id=id)
+    try:
+        obj = Profile.objects.get(user=user)
+    except Profile.DoesNotExist:
+        obj = Profile(user=user)
+        obj.save()
+
+    return render(request, 'registration/profile.html', {'profile': obj})

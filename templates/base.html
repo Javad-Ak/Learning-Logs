@@ -8,6 +8,7 @@
     {% load django_bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
+    {% load static %}
 
     <link rel="stylesheet" href=
             "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -16,7 +17,9 @@
 <body>
 <nav class="navbar navbar-expand-md mb-4 border">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'logs:index' %}">Learning Log</a>
+        <a class="navbar-brand border rounded-5 px-2" href="{% url 'logs:index' %}">
+            Learning Log
+        </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarCollapse" aria-controls="navbarCollapse"
@@ -29,7 +32,8 @@
             <ul class="navbar-nav me-auto gap-2">
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'logs:topics' %}">
-                        Topics</a>
+                        Topics
+                    </a>
                 </li>
                 <li>
                     <button class="btn" id="theme">
@@ -48,6 +52,11 @@
                         <form action="{% url 'accounts:logout' %}" method='post'>
                             {% csrf_token %}
                             {% bootstrap_button button_type="submit" content="Log out" %}
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <form action="{% url 'accounts:profile' user.id %}" method='get'>
+                            {% bootstrap_button button_type="submit" content="profile" %}
                         </form>
                     </li>
                 {% else %}
