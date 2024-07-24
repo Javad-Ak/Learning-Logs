@@ -10,8 +10,8 @@
             <img src="{% static 'avatar.png' %}" class="avatar avatar-xxl" alt="Avatar">
         {% endif %}
     </div>
-    <h4 class="text-center">{{ profile.user.frst_name }} {{ profile.user.last_name }}</h4>
-    <h5 class="text-center">{{ profile.user.username }}</h5>
+    <h4 class="text-center">{{ profile.user.first_name }} {{ profile.user.last_name }}</h4>
+    <h5 class="text-center">username: {{ profile.user.username }}</h5>
 {% endblock header %}
 
 {% block content %}
@@ -26,10 +26,34 @@
                 {% csrf_token %}
                 <button name="submit" class="btn btn-danger">Log out</button>
             </form>
-            <form action="{% url 'accounts:delete' %}" method='post'>
-                {% csrf_token %}
-                <button name="submit" class="btn btn-danger">Delete account</button>
-            </form>
+
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                Delete account
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="Delete Account"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Delete account</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Do you want to delete your account?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <form action="{% url 'accounts:delete' %}" method='post'>
+                                {% csrf_token %}
+                                <button type="button" name="submit" class="btn btn-danger">Delete account</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     {% endif %}
 {% endblock content %}

@@ -1,15 +1,14 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 from .models import Profile
 
 
-class UserForm(forms.ModelForm):
+class UserForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password')
-        labels = {'username': 'Username', 'first_name': 'First Name', 'last_name': 'Last Name', 'email': 'Email',
-                  'password': 'Password'}
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
 
 
 class ProfileForm(forms.ModelForm):
