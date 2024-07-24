@@ -56,9 +56,6 @@ def edit_profile(request):
         if form.is_valid():
             new_profile = form.save(commit=False)
 
-            if new_profile.avatar:
-                new_profile.avatar.name = str(new_profile.user.id)
-
             new_profile.user = request.user
             new_profile.save()
             return redirect('accounts:profile', id=request.user.id)
