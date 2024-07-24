@@ -3,7 +3,8 @@
 
 {% block header %}
     <h2>Topic: {{ topic.text }}</h2>
-    <h5>Added by {{ topic.owner.username }} on {{ topic.date_added|date:'M d, Y H:i' }}</h5>
+    <h5>Added by <a href="{% url 'accounts:profile' topic.owner.id %}">{{ topic.owner.username }}</a>
+        on {{ topic.date_added|date:'M d, Y H:i' }}</h5>
 {% endblock header %}
 
 {% block content %}

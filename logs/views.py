@@ -15,8 +15,6 @@ def index(request):
 def topics(request):
     """Show all topics."""
     objects = Topic.objects.order_by('date_added').reverse()
-    if objects:
-        objects.reverse()
 
     context = {'topics': objects}
     return render(request, 'logs/topics.html', context)
@@ -104,3 +102,11 @@ def edit_entry(request, entry_id):
 
     context = {'entry': entry, 'topic': topic, 'form': form}
     return render(request, 'logs/edit_entry.html', context)
+
+
+def search(request, query):
+    """Show searched topics."""
+    objects = Topic.objects.filter(text__contains=query).order_by('date_added').reverse()
+
+    context = {'topics': objects}
+    return render(request, 'logs/topics.html', context)

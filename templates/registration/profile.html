@@ -5,22 +5,30 @@
 {% block header %}
     <div class="d-flex justify-content-center my-4">
         {% if profile.avatar %}
-            <img src="{{ profile.avatar.url }}" class="rounded-circle w-50 h-50" alt="Avatar">
+            <img src="{{ profile.avatar.url }}" class="avatar avatar-xxl" alt="Avatar">
         {% else %}
-            <img src="{% static 'avatar.png' %}" class="rounded-circle w-50 h-50" alt="Avatar">
+            <img src="{% static 'avatar.png' %}" class="avatar avatar-xxl" alt="Avatar">
         {% endif %}
     </div>
     <h4 class="text-center">{{ profile.user.frst_name }} {{ profile.user.last_name }}</h4>
     <h5 class="text-center">{{ profile.user.username }}</h5>
-    
 {% endblock header %}
 
 {% block content %}
-    <p>{{ profile.bio }}</p>
+    <p>Bio: {{ profile.bio }}</p>
     {% if user.is_authenticated and user == profile.user %}
-        <div>
+        <hr/>
+        <div class="d-flex gap-2">
             <form action="{% url 'accounts:edit_profile' %}" method='get'>
                 {% bootstrap_button button_type="submit" content="Edit profile" %}
+            </form>
+            <form action="{% url 'accounts:logout' %}" method='post'>
+                {% csrf_token %}
+                <button name="submit" class="btn btn-danger">Log out</button>
+            </form>
+            <form action="{% url 'accounts:delete' %}" method='post'>
+                {% csrf_token %}
+                <button name="submit" class="btn btn-danger">Delete account</button>
             </form>
         </div>
     {% endif %}

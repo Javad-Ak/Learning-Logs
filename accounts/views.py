@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 
@@ -28,6 +29,15 @@ def register(request):
 
 
 @login_required
+def delete(request):
+    if request.method != 'POST':
+        raise Http404
+
+    request.user.delete()
+    return redirect('logs:index')
+
+
+@login_required
 def edit_profile(request):
     """edit a user's profile."""
     try:
@@ -45,6 +55,10 @@ def edit_profile(request):
         print(request.FILES)
         if form.is_valid():
             new_profile = form.save(commit=False)
+
+            if new_profile.avatar:
+                new_profile.avatar.name = str(new_profile.user.id)
+
             new_profile.user = request.user
             new_profile.save()
             return redirect('accounts:profile', id=request.user.id)
